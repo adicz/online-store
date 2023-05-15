@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create products schema
+      author: aczyz
+      changes:
+        sql: CREATE SCHEMA IF NOT EXISTS products;
+
+  - changeSet:
+      id: create product table
+      author: aczyz
+      changes:
+        - createTable:
+            schemaName: products
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: category
+                  type: varchar(255)
+              - column:
+                  name: price
+                  type: decimal(15,2)
