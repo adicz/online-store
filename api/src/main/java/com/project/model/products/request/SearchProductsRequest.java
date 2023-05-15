@@ -19,4 +19,7 @@ public class SearchProductsRequest {
     private List<String> categories;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
+
+    private Integer page;
+    private Integer size;
 }

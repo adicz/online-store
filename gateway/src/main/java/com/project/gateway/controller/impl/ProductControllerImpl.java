@@ -9,12 +9,13 @@ import com.project.model.products.response.CreateProductResponse;
 import com.project.model.products.response.DeleteProductResponse;
 import com.project.model.products.response.SearchProductsResponse;
 import com.project.model.products.response.UpdateProductResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
+import java.math.BigDecimal;
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -23,10 +24,16 @@ public class ProductControllerImpl implements ProductController {
     @Autowired
     private final GatewayProductService service;
 
-
     @Override
-    public SearchProductsResponse search(Long id) {
-        return service.search(id);
+    public SearchProductsResponse search(List<Long> ids,
+                                         List<String> names,
+                                         List<String> descriptions,
+                                         List<String> categories,
+                                         BigDecimal fromPrice,
+                                         BigDecimal toPrice,
+                                         Integer page,
+                                         Integer size) {
+        return service.search(ids, names, descriptions, categories, fromPrice, toPrice, page, size);
     }
 
     @Override

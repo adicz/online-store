@@ -16,5 +16,6 @@ import java.util.List;
 public class SearchProductsResponse {
     private SearchProductStatus status;
     private List<Product> products;
-    private Long count;
+    private Long totalElements;
+    private Integer totalPages;
 }

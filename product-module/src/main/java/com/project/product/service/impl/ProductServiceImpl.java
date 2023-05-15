@@ -18,11 +18,13 @@ import com.project.product.model.ProductEntity;
 import com.project.product.repository.ProductRepository;
 import com.project.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Slf4j(topic = "PRODUCT-MODULE")
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -40,11 +42,16 @@ public class ProductServiceImpl implements ProductService {
                 .fromPrice(request.getFromPrice())
                 .toPrice(request.getToPrice())
                 .build();
-        final List<Product> products = repository.findAll(filter)
-                .stream().map(mapper::mapToProduct).toList();
+        final PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize());
+
+        final Page<Product> productsPage = repository.findAll(filter, pageRequest)
+                .map(mapper::mapToProduct);
+        log.info("Returning list of {} products", productsPage.getTotalPages());
         return SearchProductsResponse.builder()
                 .status(SearchProductStatus.OK)
-                .products(products)
+                .products(productsPage.getContent())
+                .totalPages(productsPage.getTotalPages())
+                .totalElements(productsPage.getTotalElements())
                 .build();
     }
 
@@ -52,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
     public CreateProductResponse create(CreateProductRequest request) {
         final ProductEntity product = createProductEntity(request);
         repository.save(product);
+        log.info("Successfully create product with id: {}", product.getId());
         return CreateProductResponse.builder().status(CreateProductStatus.OK).build();
     }
 

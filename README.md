@@ -1,3 +1,7 @@
+# Online store application
+
+# Architecture
+
 # Inspirations and Recommendations
 ### Modular monolith
 - [[GitHub] Modular Monolith with DDD - K.Grzybek](https://github.com/kgrzybek/modular-monolith-with-ddd)
@@ -11,3 +15,5 @@
 - [Javeloper 2023: 🧬Testowanie kodu mikroserwisów to bajka. - Jacek Milewski](https://www.youtube.com/watch?v=QdtEWzkMgiI)
 
 ### Gradle
+
+### REST API

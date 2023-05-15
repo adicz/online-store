@@ -1,13 +1,8 @@
 package com.project.gateway.service.impl;
 
 import com.project.api.products.ProductApi;
-import com.project.gateway.exceptions.ProductNotFountException;
-import lombok.RequiredArgsConstructor;
 import com.project.gateway.model.ProductDto;
-import com.project.model.products.enums.CreateProductStatus;
-import com.project.model.products.enums.DeleteProductStatus;
-import com.project.model.products.enums.SearchProductStatus;
-import com.project.model.products.enums.UpdateProductStatus;
+import com.project.gateway.service.GatewayProductService;
 import com.project.model.products.request.CreateProductRequest;
 import com.project.model.products.request.DeleteProductRequest;
 import com.project.model.products.request.SearchProductsRequest;
@@ -16,12 +11,15 @@ import com.project.model.products.response.CreateProductResponse;
 import com.project.model.products.response.DeleteProductResponse;
 import com.project.model.products.response.SearchProductsResponse;
 import com.project.model.products.response.UpdateProductResponse;
-import com.project.gateway.service.GatewayProductService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j(topic = "GATEWAY")
 @Service
 @RequiredArgsConstructor
 public class GatewayProductServiceImpl implements GatewayProductService {
@@ -30,17 +28,30 @@ public class GatewayProductServiceImpl implements GatewayProductService {
     private final ProductApi api;
 
     @Override
-    public SearchProductsResponse search(Long id) {
+    public SearchProductsResponse search(List<Long> ids,
+                                         List<String> names,
+                                         List<String> descriptions,
+                                         List<String> categories,
+                                         BigDecimal fromPrice,
+                                         BigDecimal toPrice,
+                                         Integer page,
+                                         Integer size) {
         final SearchProductsRequest request = SearchProductsRequest.builder()
-                .ids(List.of(id))
+                .ids(ids)
+                .names(names)
+                .descriptions(descriptions)
+                .categories(categories)
+                .fromPrice(fromPrice)
+                .toPrice(toPrice)
+                .page(page)
+                .size(size)
                 .build();
+        log.info("Sending request with body {}", request);
         final SearchProductsResponse response = api.search(request);
+        log.info("Got response with status {}", response.getStatus());
 
-        if (response.getStatus() == SearchProductStatus.OK) {
-            return response;
-        } else {
-            throw new ProductNotFountException(id);
-        }
+        return response;
+
     }
 
     @Override
@@ -51,13 +62,11 @@ public class GatewayProductServiceImpl implements GatewayProductService {
                 .category(product.getCategory())
                 .price(product.getPrice())
                 .build();
+        log.info("Sending request with body {}", request);
         final CreateProductResponse response = api.create(request);
+        log.info("Got response with status {}", response.getStatus());
 
-        if (response.getStatus() == CreateProductStatus.OK) {
-            return response;
-        } else {
-            throw new RuntimeException("Something goes wrong");
-        }
+        return response;
     }
 
     @Override
@@ -69,13 +78,11 @@ public class GatewayProductServiceImpl implements GatewayProductService {
                 .category(product.getCategory())
                 .price(product.getPrice())
                 .build();
+        log.info("Sending request with body {}", request);
         final UpdateProductResponse response = api.update(request);
+        log.info("Got response with status {}", response.getStatus());
 
-        if (response.getStatus() == UpdateProductStatus.OK) {
-            return response;
-        } else {
-            throw new ProductNotFountException(product.getId());
-        }
+        return response;
     }
 
     @Override
@@ -83,12 +90,10 @@ public class GatewayProductServiceImpl implements GatewayProductService {
         final DeleteProductRequest request = DeleteProductRequest.builder()
                 .id(id)
                 .build();
+        log.info("Sending request with body {}", request);
         final DeleteProductResponse response = api.delete(request);
+        log.info("Got response with status {}", response.getStatus());
 
-        if (response.getStatus() == DeleteProductStatus.OK) {
-            return response;
-        } else {
-            throw new ProductNotFountException(id);
-        }
+        return response;
     }
 }
