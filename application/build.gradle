@@ -1,0 +1,14 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+apply plugin: 'org.springframework.boot'
+
+description = "Application component"
+
+dependencies {
+    implementation project(":api")
+    implementation project(":client-module")
+    implementation project(":gateway")
+    implementation project(":product-module")
+}

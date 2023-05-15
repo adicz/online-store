@@ -1,0 +1,5 @@
+description = "Gateway component"
+
+dependencies {
+    implementation project(":api")
+}

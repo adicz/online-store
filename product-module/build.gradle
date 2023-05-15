@@ -1,0 +1,5 @@
+description = "Product component"
+
+dependencies {
+    implementation project(":api")
+}
