@@ -63,15 +63,6 @@ public class ProductServiceImpl implements ProductService {
         return CreateProductResponse.builder().status(CreateProductStatus.OK).build();
     }
 
-    private ProductEntity createProductEntity(CreateProductRequest request) {
-        return ProductEntity.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .category(request.getCategory())
-                .price(request.getPrice())
-                .build();
-    }
-
     @Override
     public UpdateProductResponse update(UpdateProductRequest request) {
         if (repository.existsById(request.getId())) {
@@ -80,6 +71,15 @@ public class ProductServiceImpl implements ProductService {
             return UpdateProductResponse.builder().status(UpdateProductStatus.OK).build();
         }
         return UpdateProductResponse.builder().status(UpdateProductStatus.NOT_FOUND).build();
+    }
+
+    private ProductEntity createProductEntity(CreateProductRequest request) {
+        return ProductEntity.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .category(request.getCategory())
+                .price(request.getPrice())
+                .build();
     }
 
     private ProductEntity createProductEntity(UpdateProductRequest request) {

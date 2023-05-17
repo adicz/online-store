@@ -9,15 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan(basePackages="com.project")
+@ComponentScan(basePackages = "com.project")
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages="com.project")
-@EntityScan(basePackages="com.project")
+@EnableJpaRepositories(basePackages = "com.project")
+@EntityScan(basePackages = "com.project")
 @SpringBootApplication
 public class OnlineStoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(OnlineStoreApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OnlineStoreApplication.class, args);
+    }
 
 }
