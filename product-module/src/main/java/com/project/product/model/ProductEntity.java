@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -24,8 +25,12 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String title;
     private String description;
     private String category;
     private BigDecimal price;
+    private Integer availability;
+    private OffsetDateTime createTimestamp;
+    private OffsetDateTime updateTimestamp;
+    private Integer version;
 }

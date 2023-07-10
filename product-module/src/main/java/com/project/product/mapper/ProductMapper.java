@@ -9,4 +9,6 @@ public interface ProductMapper {
 
     Product mapToProduct(ProductEntity entity);
 
+    ProductEntity mapToEntity(Product product);
+
 }

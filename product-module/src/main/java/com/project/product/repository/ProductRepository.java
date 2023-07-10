@@ -26,8 +26,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
     @Setter
     class ProductFilter implements Specification<ProductEntity> {
         private final List<Long> ids;
-        private final List<String> names;
-        private final List<String> descriptions;
+        private final String text;
         private final List<String> categories;
         private final BigDecimal fromPrice;
         private final BigDecimal toPrice;
@@ -35,16 +34,15 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
         @Override
         public Predicate toPredicate(Root<ProductEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
             final List<Predicate> filters = new LinkedList<>();
+
             if (!CollectionUtils.isEmpty(ids)) {
                 filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.id)).value(ids));
             }
-            if (!CollectionUtils.isEmpty(names)) {
-                filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.name)).value(names));
+            if (text != null) {
+                filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.title)).value(text));
+                filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.description)).value(text));
             }
-            if (!CollectionUtils.isEmpty(names)) {
-                filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.description)).value(descriptions));
-            }
-            if (!CollectionUtils.isEmpty(names)) {
+            if (!CollectionUtils.isEmpty(categories)) {
                 filters.add(criteriaBuilder.in(root.get(ProductEntity.Fields.category)).value(categories));
             }
             if (fromPrice != null) {
@@ -53,6 +51,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>, J
             if (toPrice != null) {
                 filters.add(criteriaBuilder.lessThanOrEqualTo(root.get(ProductEntity.Fields.price), toPrice));
             }
+            filters.add(criteriaBuilder.greaterThan(root.get(ProductEntity.Fields.availability), 0));
+
             return criteriaBuilder.and(filters.toArray(new Predicate[0]));
         }
     }

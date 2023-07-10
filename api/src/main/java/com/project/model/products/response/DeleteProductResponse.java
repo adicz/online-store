@@ -12,4 +12,5 @@ import com.project.model.products.enums.DeleteProductStatus;
 @AllArgsConstructor
 public class DeleteProductResponse {
     private DeleteProductStatus status;
+    private String errorMessage;
 }

@@ -1,5 +1,6 @@
 package com.project.model.products.response;
 
+import com.project.model.products.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,8 +12,7 @@ import com.project.model.products.enums.CreateProductStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateProductResponse {
-
     private CreateProductStatus status;
+    private Product createdProduct;
     private String errorMessage;
-
 }

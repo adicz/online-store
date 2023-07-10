@@ -21,7 +21,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
+                  name: title
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -34,3 +34,18 @@ databaseChangeLog:
               - column:
                   name: price
                   type: decimal(15,2)
+              - column:
+                  name: discountedPrice
+                  type: decimal(15,2)
+              - column:
+                  name: availability
+                  type: int
+              - column:
+                  name: createTimestamp
+                  type: timestamp
+              - column:
+                  name: updateTimestamp
+                  type: timestamp
+              - column:
+                  name: version
+                  type: int

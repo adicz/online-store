@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -13,8 +14,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Product {
     private Long id;
-    private String name;
-    private String category;
+    private String title;
     private String description;
+    private String category;
     private BigDecimal price;
+    private BigDecimal discountedPrice;
+    private Integer availability;
+    private OffsetDateTime createTimestamp;
+    private OffsetDateTime updateTimestamp;
+    private Integer version;
 }

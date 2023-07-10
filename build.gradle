@@ -48,14 +48,14 @@ subprojects {
 		implementation 'org.postgresql:postgresql:42.6.0'
 		implementation 'org.liquibase:liquibase-core'
 
-		compileOnly 'org.projectlombok:lombok'
+		implementation 'org.projectlombok:lombok:1.18.20'
 		annotationProcessor 'org.projectlombok:lombok'
 
 		compileOnly 'org.mapstruct:mapstruct:1.4.2.Final'
 		annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.spockframework:spock-spring:2.4-M1-groovy-4.0'
 	}
 
 	if (it.name != 'application') {
@@ -66,5 +66,9 @@ subprojects {
 		jar {
 			enabled = true
 		}
+	}
+
+	test {
+		useJUnitPlatform()
 	}
 }

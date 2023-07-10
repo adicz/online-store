@@ -18,4 +18,5 @@ public class SearchProductsResponse {
     private List<Product> products;
     private Long totalElements;
     private Integer totalPages;
+    private String errorMessage;
 }

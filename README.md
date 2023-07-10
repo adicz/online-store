@@ -1,6 +1,7 @@
 # Online store application
 
 # Architecture
+![Architecture diagram](./docs/Architecture.JPG)
 
 # Inspirations and Recommendations
 ### Modular monolith

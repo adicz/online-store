@@ -19,25 +19,25 @@ import com.project.product.repository.ProductRepository;
 import com.project.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.time.OffsetDateTime;
 
 @Slf4j(topic = "PRODUCT-MODULE")
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Autowired
+
     private final ProductRepository repository;
-    @Autowired
     private final ProductMapper mapper;
 
     @Override
     public SearchProductsResponse search(SearchProductsRequest request) {
         final ProductRepository.ProductFilter filter = ProductRepository.ProductFilter.builder()
                 .ids(request.getIds())
-                .names(request.getNames())
+                .text(request.getText())
                 .categories(request.getCategories())
                 .fromPrice(request.getFromPrice())
                 .toPrice(request.getToPrice())
@@ -58,15 +58,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public CreateProductResponse create(CreateProductRequest request) {
         final ProductEntity product = createProductEntity(request);
-        repository.save(product);
+        final ProductEntity created = repository.save(product);
         log.info("Successfully create product with id: {}", product.getId());
-        return CreateProductResponse.builder().status(CreateProductStatus.OK).build();
+        return CreateProductResponse.builder()
+                .status(CreateProductStatus.OK)
+                .createdProduct(mapper.mapToProduct(created))
+                .build();
     }
 
     @Override
     public UpdateProductResponse update(UpdateProductRequest request) {
         if (repository.existsById(request.getId())) {
-            final ProductEntity product = createProductEntity(request);
+
+
             repository.save(product);
             return UpdateProductResponse.builder().status(UpdateProductStatus.OK).build();
         }
@@ -75,17 +79,19 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductEntity createProductEntity(CreateProductRequest request) {
         return ProductEntity.builder()
-                .name(request.getName())
+                .title(request.getName())
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())
+                .createTimestamp(OffsetDateTime.now())
+                .updateTimestamp(OffsetDateTime.now())
                 .build();
     }
 
     private ProductEntity createProductEntity(UpdateProductRequest request) {
         return ProductEntity.builder()
                 .id(request.getId())
-                .name(request.getName())
+                .title(request.getName())
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())

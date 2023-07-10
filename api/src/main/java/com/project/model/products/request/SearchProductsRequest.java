@@ -14,8 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchProductsRequest {
     private List<Long> ids;
-    private List<String> names;
-    private List<String> descriptions;
+    private String text;
     private List<String> categories;
     private BigDecimal fromPrice;
     private BigDecimal toPrice;
