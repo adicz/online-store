@@ -1,14 +1,29 @@
-on: [pull_request]
+on: 
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  check-commit-message:
+  build:
     runs-on: ubuntu-latest
-    name: Check commit message
-    permissions:
-      pull-requests: write # required to post pull request comments
-      contents: read # required to read commit information
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check commit message
-        uses: actions/beams-commit-message-checker@v0.1.0
+
+      - name: Opinionated-commit-message
+        uses: mristin/opinionated-commit-message@v3.0.0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+
+      - name: Build project
+        run: ./gradlew build --console=plain
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest --console=plain
+
+      - name: Run tests
+        run: ./gradlew test --console=plain
