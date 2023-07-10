@@ -17,7 +17,7 @@ public class InMemoryJpaSpecificationExecutor<T, ID extends Serializable> extend
 
     @Override
     public Optional<T> findOne(Specification<T> spec) {
-        List<T> results = findAll(spec);
+        final List<T> results = findAll(spec);
         return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 
@@ -28,9 +28,9 @@ public class InMemoryJpaSpecificationExecutor<T, ID extends Serializable> extend
 
     @Override
     public Page<T> findAll(Specification<T> spec, Pageable pageable) {
-        List<T> allResults = findAll(spec);
-        int totalCount = allResults.size();
-        List<T> paginatedResults = getPageFromList(allResults, pageable);
+        final List<T> allResults = findAll(spec);
+        final int totalCount = allResults.size();
+        final List<T> paginatedResults = getPageFromList(allResults, pageable);
         return new PageImpl<>(paginatedResults, pageable, totalCount);
     }
 
@@ -51,7 +51,7 @@ public class InMemoryJpaSpecificationExecutor<T, ID extends Serializable> extend
 
     @Override
     public long delete(Specification<T> spec) {
-        List<T> entitiesToDelete = findAll(spec);
+        final List<T> entitiesToDelete = findAll(spec);
         deleteAll(entitiesToDelete);
         return entitiesToDelete.size();
     }

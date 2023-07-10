@@ -1,0 +1,7 @@
+- name: Run commit message check
+    run: |
+      COMMIT_MSG=$(git log --format=%B -n 1 "$GITHUB_SHA")
+      if ! bash -c './commit_check.sh <<< "$COMMIT_MSG"'; then
+        echo "Invalid commit message format!"
+        exit 1
+      fi

@@ -1,14 +1,50 @@
-on: [pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   check-commit-message:
+    name: Check Commit Message
     runs-on: ubuntu-latest
-    name: Check commit message
-    permissions:
-      pull-requests: write # required to post pull request comments
-      contents: read # required to read commit information
+    steps:
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: '^\[[^\n]+\].*'
+          flags: 'gm'
+          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
+      - name: Check Line Length
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: '^.{1,72}$'
+          error: 'The maximum line length of 74 characters is exceeded.'
+          excludeDescription: 'true' # optional: this excludes the description body of a pull request
+          excludeTitle: 'true' # optional: this excludes the title of a pull request
+          checkAllCommitMessages: 'true' # optional: this checks all commits associated with a pull request
+          accessToken: ${{ secrets.GITHUB_TOKEN }} # github access token is only required if checkAllCommitMessages is true
+
+  build:
+    needs: check-commit-message
+    name: Build project
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Check commit message
-        uses: actions/beams-commit-message-checker@v0.1.0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          gradle-version: '8.0.0'
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Compile project
+        run: ./gradlew compileJava compileTestJava compileGroovy compileTestGroovy
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest --console=plain
+      - name: Run tests
+        run: ./gradlew test --console=plain

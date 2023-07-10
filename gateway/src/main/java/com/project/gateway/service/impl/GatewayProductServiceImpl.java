@@ -38,8 +38,6 @@ public class GatewayProductServiceImpl implements GatewayProductService {
                                          Integer size) {
         final SearchProductsRequest request = SearchProductsRequest.builder()
                 .ids(ids)
-                .names(names)
-                .descriptions(descriptions)
                 .categories(categories)
                 .fromPrice(fromPrice)
                 .toPrice(toPrice)
@@ -57,7 +55,6 @@ public class GatewayProductServiceImpl implements GatewayProductService {
     @Override
     public CreateProductResponse create(ProductDto product) {
         final CreateProductRequest request = CreateProductRequest.builder()
-                .name(product.getName())
                 .description(product.getDescription())
                 .category(product.getCategory())
                 .price(product.getPrice())

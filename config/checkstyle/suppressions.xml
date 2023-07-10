@@ -6,4 +6,7 @@
 
 <suppressions>
     <suppress files="OnlineStoreApplication.java" checks="HideUtilityClassConstructor"/>
+    <suppress files="OnlineStoreApplicationTests.java" checks="FileTabCharacter"/>
+    <suppress files="InMemoryJpaRepository.java" checks="VisibilityModifier"/>
+    <suppress files="InMemoryJpaRepository.java" checks="OverloadMethodsDeclarationOrder"/>
 </suppressions>
