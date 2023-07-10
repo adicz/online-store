@@ -1,0 +1,14 @@
+on: [pull_request]
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    name: Check commit message
+    permissions:
+      pull-requests: write # required to post pull request comments
+      contents: read # required to read commit information
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check commit message
+        uses: actions/beams-commit-message-checker@v0.1.0
