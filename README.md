@@ -1,6 +1,6 @@
 # Online store application
 
-Test description
+Test description 1
 
 # Architecture
 ![Architecture diagram](./docs/Architecture.JPG)
