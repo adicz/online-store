@@ -10,5 +10,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Commit Quality Checker
         uses: commit-message-collective/beams-commit-message-checker@v0.1.0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+
+      - name: Build project
+        run: ./gradlew build --console=plain
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest --console=plain
+
+      - name: Run tests
+        run: ./gradlew test --console=plain
