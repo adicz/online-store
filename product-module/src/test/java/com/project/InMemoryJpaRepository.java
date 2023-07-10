@@ -38,7 +38,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public <S extends T> List<S> saveAllAndFlush(Iterable<S> entities) {
-        List<S> savedEntities = saveAll(entities);
+        final List<S> savedEntities = saveAll(entities);
         flush();
         return savedEntities;
     }
@@ -94,9 +94,9 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-        List<S> allResults = findAll(example);
-        int totalCount = allResults.size();
-        List<S> paginatedResults = getPageFromList(allResults, pageable);
+        final List<S> allResults = findAll(example);
+        final int totalCount = allResults.size();
+        final List<S> paginatedResults = getPageFromList(allResults, pageable);
         return new PageImpl<>(paginatedResults, pageable, totalCount);
     }
 
@@ -117,7 +117,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public <S extends T> S save(S entity) {
-        ID id = getEntityId(entity);
+        final ID id = getEntityId(entity);
         map.put(id, entity);
         setEntityId(entity, id);
         return entity;
@@ -125,7 +125,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public <S extends T> List<S> saveAll(Iterable<S> entities) {
-        List<S> savedEntities = new ArrayList<>();
+        final List<S> savedEntities = new ArrayList<>();
         for (S entity : entities) {
             savedEntities.add(save(entity));
         }
@@ -134,7 +134,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public Optional<T> findById(ID id) {
-        T entity = map.get(id);
+        final T entity = map.get(id);
         return Optional.ofNullable(entity);
     }
 
@@ -150,7 +150,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public List<T> findAllById(Iterable<ID> ids) {
-        List<T> resultList = new ArrayList<>();
+        final List<T> resultList = new ArrayList<>();
         for (ID id : ids) {
             findById(id).ifPresent(resultList::add);
         }
@@ -169,7 +169,7 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public void delete(T entity) {
-        ID id = getEntityId(entity);
+        final ID id = getEntityId(entity);
         deleteById(id);
     }
 
@@ -199,16 +199,16 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @Override
     public Page<T> findAll(Pageable pageable) {
-        List<T> allResults = new ArrayList<>(map.values());
-        int totalCount = allResults.size();
-        List<T> paginatedResults = getPageFromList(allResults, pageable);
+        final List<T> allResults = new ArrayList<>(map.values());
+        final int totalCount = allResults.size();
+        final List<T> paginatedResults = getPageFromList(allResults, pageable);
         return new PageImpl<>(paginatedResults, pageable, totalCount);
     }
 
     // Metoda pomocnicza do pobierania identyfikatora encji
     @SuppressWarnings("unchecked")
     private ID getEntityId(T entity) {
-        Long nextId = map.keySet().stream()
+        final Long nextId = map.keySet().stream()
                 .mapToLong(key -> (Long) key)
                 .max()
                 .orElse(0L) + 1;
@@ -217,8 +217,8 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     @SneakyThrows
     private void setEntityId(T entity, ID id) {
-        Class<?> entityClass = entity.getClass();
-        Optional<Method> setIdMethod = ReflectionUtils.findMethod(entityClass, "setId", id.getClass());
+        final Class<?> entityClass = entity.getClass();
+        final Optional<Method> setIdMethod = ReflectionUtils.findMethod(entityClass, "setId", id.getClass());
         if (setIdMethod.isPresent()) {
             ReflectionUtils.makeAccessible(setIdMethod.get());
             ReflectionUtils.invokeMethod(setIdMethod.get(), entity, id);
@@ -234,10 +234,10 @@ public class InMemoryJpaRepository<T, ID extends Serializable> implements JpaRep
 
     // Metoda pomocnicza do paginacji listy wynikowej
     <S> List<S> getPageFromList(List<S> list, Pageable pageable) {
-        int pageSize = pageable.getPageSize();
-        int pageNumber = pageable.getPageNumber();
-        int fromIndex = Math.min(pageNumber * pageSize, list.size());
-        int toIndex = Math.min((pageNumber + 1) * pageSize, list.size());
+        final int pageSize = pageable.getPageSize();
+        final int pageNumber = pageable.getPageNumber();
+        final int fromIndex = Math.min(pageNumber * pageSize, list.size());
+        final int toIndex = Math.min((pageNumber + 1) * pageSize, list.size());
         return list.subList(fromIndex, toIndex);
     }
 }

@@ -28,7 +28,6 @@ class ProductApi_unitTest extends Specification {
                 .description("(PlayStation 5) The latest Sony PlayStation introduced in November 2020.")
                 .category("GAMING")
                 .price(3020.20)
-                .
                 .build()
 
         when:

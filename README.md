@@ -17,4 +17,7 @@
 
 ### Gradle
 
+### CI/CD
+- [How to get commit message](https://stackoverflow.com/questions/63619329/github-action-get-commit-message)
+
 ### REST API

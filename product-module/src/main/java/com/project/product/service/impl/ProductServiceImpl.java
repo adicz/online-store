@@ -70,8 +70,6 @@ public class ProductServiceImpl implements ProductService {
     public UpdateProductResponse update(UpdateProductRequest request) {
         if (repository.existsById(request.getId())) {
 
-
-            repository.save(product);
             return UpdateProductResponse.builder().status(UpdateProductStatus.OK).build();
         }
         return UpdateProductResponse.builder().status(UpdateProductStatus.NOT_FOUND).build();
@@ -79,7 +77,6 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductEntity createProductEntity(CreateProductRequest request) {
         return ProductEntity.builder()
-                .title(request.getName())
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())
